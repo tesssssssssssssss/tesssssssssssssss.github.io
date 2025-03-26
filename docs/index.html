@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我们的爱情故事</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ffebee;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    .cherry-blossom-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+      background-size: cover;
+      z-index: -2;
+    }
+    
+    .content {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      width: 500px;
+      z-index: 1;
+    }
+    
+    h1 {
+      color: #e91e63;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    
+    .time-counter {
+      font-size: 1.5rem;
+      margin: 1.5rem 0;
+      color: #d81b60;
+    }
+    
+    .couple {
+      display: flex;
+      justify-content: space-around;
+      margin: 2rem 0;
+      align-items: center;
+    }
+    
+    .couple img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .heart {
+      color: #e91e63;
+      font-size: 2rem;
+      animation: heartbeat 1s infinite;
+    }
+    
+    .message {
+      margin-top: 1.5rem;
+      font-style: italic;
+      color: #ad1457;
+    }
+    
+    .petal {
+      position: absolute;
+      background-color: #fce4ec;
+      border-radius: 150% 0 150% 0;
+      animation: falling linear forwards;
+      z-index: -1;
+    }
+    
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes falling {
+      0% {
+        transform: translate(0, -10px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(100px, 100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cherry-blossom-container"></div>
+  <div class="content">
+    <h1>我们的爱情故事</h1>
+    <div class="couple">
+      <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=boy" alt="男孩卡通形象">
+      <div class="heart">❤️</div>
+      <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=girl" alt="女孩卡通形象">
+    </div>
+    <div class="time-counter">
+      <p>我们已经在一起</p>
+      <p id="days">0</p>
+      <p>天</p>
+      <p id="time">00:00:00</p>
+    </div>
+    <div class="message">
+      "爱情是灵魂的共鸣，心灵的对话。"
+    </div>
+  </div>
+  
+  <script>
+    // 设置恋爱开始的日期（格式：年, 月-1, 日）
+    // 注意：JavaScript 中月份是从 0 开始的，所以 1 月是 0，2 月是 1，以此类推
+    const loveStartDate = new Date(2022, 3, 31); // 示例：2023年1月1日
+    
+    // 更新计时器
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - loveStartDate;
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById('days').textContent = days;
+      document.getElementById('time').textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    // 创建樱花花瓣
+    function createPetal() {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      
+      const size = Math.random() * 10 + 5;
+      const left = Math.random() * window.innerWidth;
+      const animationDuration = Math.random() * 5 + 5;
+      const hue = Math.random() * 20 + 350; // 粉色到红色的色调
+      
+      petal.style.width = `${size}px`;
+      petal.style.height = `${size}px`;
+      petal.style.left = `${left}px`;
+      petal.style.top = '-10px';
+      petal.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
+      petal.style.animationDuration = `${animationDuration}s`;
+      
+      document.body.appendChild(petal);
+      
+      // 动画结束后移除花瓣
+      setTimeout(() => {
+        petal.remove();
+      }, animationDuration * 1000);
+    }
+    
+    // 初始化
+    setInterval(updateCounter, 1000);
+    updateCounter();
+    
+    // 创建樱花雨
+    setInterval(createPetal, 200);
+    for (let i = 0; i < 30; i++) {
+      setTimeout(createPetal, i * 100);
+    }
+  </script>
+</body>
+</html>
